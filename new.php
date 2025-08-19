@@ -4,11 +4,9 @@ $base_url = "https://switchapidev.centenarybank.co.ug";
 $username = "sunsys"; 
 $password = "C0mpl3x@Sun="; 
 
-
-
 // ===== FUNCTION TO GET TOKENS =====
 function getTokens($base_url, $username, $password) {
-    $url = $base_url . "/token/";
+    $url = $base_url . "/token/";   // per API spec
 
     $payload = json_encode([
         "username" => $username,
@@ -25,7 +23,7 @@ function getTokens($base_url, $username, $password) {
 
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
-        die("cURL Error: " . curl_error($ch));
+        die("cURL Error (getTokens): " . curl_error($ch));
     }
     curl_close($ch);
 
@@ -34,7 +32,7 @@ function getTokens($base_url, $username, $password) {
 
 // ===== FUNCTION TO GET FOREX RATES =====
 function getForexRates($base_url, $access_token, $aux_no, $resp_type = "json") {
-    $url = $base_url . "/forex_rates";
+    $url = $base_url . "/api/forex_rates"; 
 
     $payload = json_encode([
         "AUX_NO" => $aux_no,
@@ -52,7 +50,7 @@ function getForexRates($base_url, $access_token, $aux_no, $resp_type = "json") {
 
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
-        die("cURL Error: " . curl_error($ch));
+        die("cURL Error (getForexRates): " . curl_error($ch));
     }
     curl_close($ch);
 
@@ -65,13 +63,14 @@ $tokens = getTokens($base_url, $username, $password);
 if (!empty($tokens['access'])) {
     echo "Access Token: " . $tokens['access'] . PHP_EOL;
 
-    // Example AUX_NO — should be unique for each request
-    $aux_no = "KLFLKFKLF"; 
+    // AUX_NO must be 15 chars
+    $aux_no = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"), 0, 15);
+
     $forex_rates = getForexRates($base_url, $tokens['access'], $aux_no);
 
-    echo "Forex Rates:\n";
+    echo "Forex Rates Response:\n";
     print_r($forex_rates);
 } else {
-    echo "Failed to get tokens:\n";
+    echo "Failed to get tokens. Raw response:\n";
     print_r($tokens);
 }
