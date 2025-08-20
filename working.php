@@ -8,7 +8,7 @@ $password = "C0mpl3x@Sun=";
 
 // ===== FUNCTION TO GET TOKENS =====
 function getTokens($base_url, $username, $password) {
-    $url = $base_url . "/token/";
+    $url = $base_url . "/api/token/";
 
     $payload = json_encode([
         "username" => $username,

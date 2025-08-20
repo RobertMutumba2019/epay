@@ -1,6 +1,6 @@
 <?php
 
-$url = "https://switchapidev.centenarybank.co.ug/api/token/";
+$url = "https://switchapiuat.centenarybank.co.ug/api/token/";
 
 // User credentials
 $username = "sunsys"; 
@@ -46,23 +46,14 @@ if ($response === false) {
         $refreshToken = $responseData['refresh'];
         echo "Access Token: " . $accessToken . "\n";
         echo "Refresh Token: " . $refreshToken . "\n";
-        echo "Successfully retrieved tokens.";
-    } elseif (isset($responseData['detail'])) {
-        // Failure response 
-        $errorDetail = $responseData['detail'];
-        echo "Error: " . $errorDetail;
-    } else {
-        // Unexpected response format
-        echo "Unexpected response from the API:\n" . $response;
-    }
-}
+        echo "Successfully retrieved tokens.\n";
 
-
-$forexUrl = "https://switchapiuat.centenarybank.co.ug/api/forex_rates";
+        // ===================== FOREX RATES REQUEST =====================
+        $forexUrl = "https://switchapiuat.centenarybank.co.ug/api/forex_rates";
 
         // Sample request body for forex rates
         $forexData = array(
-            "AUX_NO" => "KLFLKFKLF",   // Example transaction ID
+            "AUX_NO" => "XSDFFGGLFKNJ",   
             "RESP_TYPE" => "json"
         );
 
@@ -99,14 +90,3 @@ $forexUrl = "https://switchapiuat.centenarybank.co.ug/api/forex_rates";
         echo "Unexpected response from the API:\n" . $response;
     }
 }
-?>
-
-
-
-curl --location 'https://switchapidev.centenarybank.co.ug/api/forex_rates' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer {{Input Generated Token here}}' \
---data '{
-    "AUX_NO": "XSDFFGGLFKNJ",
-    "RESP_TYPE": "json"
-}'
